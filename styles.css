@@ -1,0 +1,187 @@
+:root {
+  --color-light: #ffffff;
+  --color-game-bg: #bdbdbd;
+  --color-game-header-bg: #c0c0c0;
+  --color-border: #7b7b7b;
+}
+
+body {
+  background-image: url("./assets/bg.jpg");
+  background-size: cover;
+}
+
+.game {
+  margin: 0 auto;
+  padding-top: 10px;
+  width: 542px;
+  height: 626px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-direction: column;
+  background-color: var(--color-game-bg);
+  border: 5px solid;
+  border-top-color: var(--color-light);
+  border-right-color: var(--color-border);
+  border-bottom-color: var(--color-border);
+  border-left-color: var(--color-light);
+}
+
+.game-header {
+  padding: 8px 12px 0;
+  width: 486px;
+  height: 58px;
+  display: flex;
+  justify-content: space-between;
+  background-color: var(--color-game-header-bg);
+  border: 5px solid;
+  border-top-color: var(--color-border);
+  border-right-color: var(--color-light);
+  border-bottom-color: var(--color-light);
+  border-left-color: var(--color-border);
+}
+
+.game-body {
+  width: 512px;
+  height: 512px;
+  display: flex;
+  flex-wrap: wrap;
+  border: 5px solid;
+  border-top-color: var(--color-border);
+  border-right-color: var(--color-light);
+  border-bottom-color: var(--color-light);
+  border-left-color: var(--color-border);
+}
+
+.max-time {
+  display: flex;
+}
+
+.current-time {
+  display: flex;
+}
+
+.digit {
+  width: 26px;
+  height: 46px;
+}
+
+.digit-zero {
+  background-image: url("./assets/digit-zero.png");
+}
+
+.digit-one {
+  background-image: url("./assets/digit-one.png");
+}
+
+.digit-two {
+  background-image: url("./assets/digit-two.png");
+}
+
+.digit-three {
+  background-image: url("./assets/digit-three.png");
+}
+
+.digit-four {
+  background-image: url("./assets/digit-four.png");
+}
+
+.digit-five {
+  background-image: url("./assets/digit-five.png");
+}
+
+.digit-six {
+  background-image: url("./assets/digit-six.png");
+}
+
+.digit-seven {
+  background-image: url("./assets/digit-seven.png");
+}
+
+.digit-eight {
+  background-image: url("./assets/digit-eight.png");
+}
+
+.digit-nine {
+  background-image: url("./assets/digit-nine.png");
+}
+
+.smile {
+  width: 52px;
+  height: 52px;
+  background-image: url("./assets/smile.png");
+}
+
+.smile-shocked {
+  background-image: url("./assets/smile-shocked.png");
+}
+
+.smile-win {
+  background-image: url("./assets/smile-win.png");
+}
+
+.smile-game-over {
+  background-image: url("./assets/smile-game-over.png");
+}
+
+.smile-mousedown {
+  background-image: url("./assets/smile-mousedown.png");
+}
+
+.default {
+  width: 32px;
+  height: 32px;
+  background-image: url("./assets/default.png");
+}
+
+.empty {
+  background-image: url("./assets/empty.png");
+}
+
+.flag {
+  background-image: url("./assets/flag.png");
+}
+
+.question {
+  background-image: url("./assets/question.png");
+}
+
+.checked[data="1"] {
+  background-image: url("./assets/one.png");
+}
+
+.checked[data="2"] {
+  background-image: url("./assets/two.png");
+}
+
+.checked[data="3"] {
+  background-image: url("./assets/three.png");
+}
+
+.checked[data="4"] {
+  background-image: url("./assets/four.png");
+}
+
+.checked[data="5"] {
+  background-image: url("./assets/five.png");
+}
+
+.checked[data="6"] {
+  background-image: url("./assets/six.png");
+}
+
+.checked[data="7"] {
+  background-image: url("./assets/seven.png");
+}
+
+.checked[data="8"] {
+  background-image: url("./assets/eight.png");
+}
+
+.checked.mine {
+  background-image: url("./assets/mine.png");
+}
+
+.checked.mine-red {
+  background-image: url("./assets/mine-red.png");
+}
