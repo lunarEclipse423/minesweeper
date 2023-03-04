@@ -18,6 +18,10 @@ const gameOver = () => {
     if (cell.classList.contains("mine")) {
       cell.classList.add("checked");
     }
+    if (!cell.classList.contains("mine") && cell.classList.contains("flag")) {
+      cell.classList.add("checked");
+      cell.classList.add("mine-crossed");
+    }
   });
 };
 

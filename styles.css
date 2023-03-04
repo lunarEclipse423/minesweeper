@@ -185,3 +185,7 @@ body {
 .checked.mine-red {
   background-image: url("./assets/mine-red.png");
 }
+
+.checked.mine-crossed {
+  background-image: url("./assets/mine-crossed.png");
+}
