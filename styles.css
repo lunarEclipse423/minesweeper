@@ -53,7 +53,7 @@ body {
   border-left-color: var(--color-border);
 }
 
-.max-time {
+.mines-left {
   display: flex;
 }
 

@@ -1,19 +1,19 @@
 const gameBoard = document.querySelector(".game-body");
+const minesLeftCounter = document.querySelectorAll(".mines-left .digit");
 const smile = document.querySelector(".smile");
-let secondsTimer, minutesTimer;
+let secondsTimer;
 let flags = 0;
 let cells = [];
 let isGameOver = false;
 let isFirstClick = true;
-let duration;
 let width;
 let mines;
+let minesLeft;
 
 const gameOver = () => {
   isGameOver = true;
   smile.classList.add("smile-game-over");
   clearInterval(secondsTimer);
-  clearInterval(minutesTimer);
   cells.forEach((cell) => {
     if (cell.classList.contains("mine")) {
       cell.classList.add("checked");
@@ -71,37 +71,10 @@ const displayDigit = (domElement, digit, countOrder) => {
   }
 };
 
-const startGameTimer = (duration) => {
-  const minutesClock = document.querySelectorAll(".max-time .digit");
-  const start = Date.now();
-  let diff;
-  let minutes = 0;
-
-  const minutesTimer = setInterval(() => {
-    diff = duration - (((Date.now() - start) / 1000) | 0);
-    if (diff >= duration) {
-      gameOver();
-      clearInterval(minutesTimer);
-      return;
-    }
-    minutes = (diff / 60) | 0;
-    minutes =
-      minutes < 10 ? "00" + minutes : minutes < 100 ? "0" + minutes : "" + minutes;
-
-    for (let i = 0; i < minutes.length; i++) {
-      displayDigit(minutesClock[i], minutes[i], "descending");
-    }
-  }, 1000);
-
+const startGameTimer = () => {
   const secondsClock = document.querySelectorAll(".current-time .digit");
   let seconds = 0;
-
   const secondsTimer = setInterval(() => {
-    if (seconds >= duration) {
-      gameOver();
-      clearInterval(secondsTimer);
-      return;
-    }
     seconds += 1;
     const secondsText =
       seconds < 10 ? "00" + seconds : seconds < 100 ? "0" + seconds : "" + seconds;
@@ -110,22 +83,28 @@ const startGameTimer = (duration) => {
     }
   }, 1000);
 
-  return { secondsTimer, minutesTimer };
+  return secondsTimer;
 };
 
 const restartGame = () => {
   clearInterval(secondsTimer);
-  clearInterval(minutesTimer);
-  let maxTime = document.querySelectorAll(".max-time .digit");
   let currenTime = document.querySelectorAll(".current-time .digit");
+  let maxMines = document.querySelectorAll(".mines-left .digit");
 
-  for (let i = 0; i < maxTime.length; i++) {
-    maxTime[i].className = `max-time digit ${i === 1 ? "digit-four" : "digit-zero"}`;
+  for (let i = 0; i < currenTime.length; i++) {
     currenTime[i].className = "current-time digit digit-zero";
   }
+
+  const maxMinesText = mines < 10 ? "00" + mines : mines < 100 ? "0" + mines : "" + mines;
+  for (let i = 0; i < maxMines.length; i++) {
+    maxMines[i].className = "current-time digit";
+    displayDigit(maxMines[i], maxMinesText[i], "ascending");
+  }
+
   if (smile.classList.contains("smile-game-over")) {
     smile.classList.remove("smile-game-over");
   }
+
   if (smile.classList.contains("smile-win")) {
     smile.classList.remove("smile-win");
   }
@@ -134,6 +113,7 @@ const restartGame = () => {
   cells = [];
   isGameOver = false;
   isFirstClick = true;
+  minesLeft = mines;
   gameBoard.textContent = "";
   createMap(width, mines);
 };
@@ -162,9 +142,7 @@ const revealCell = (cellId) => {
     }
   } else {
     if (isFirstClick) {
-      const timers = startGameTimer(duration);
-      secondsTimer = timers.secondsTimer;
-      minutesTimer = timers.minutesTimer;
+      secondsTimer = startGameTimer();
       isFirstClick = false;
     }
     let total = cell.getAttribute("data");
@@ -186,11 +164,35 @@ const toggleCellMark = (cell) => {
     if (!cell.classList.contains("flag") && !cell.classList.contains("question")) {
       cell.classList.add("flag");
       flags++;
+      if (cell.classList.contains("mine")) {
+        minesLeft = minesLeft - 1;
+        let minesLeftText =
+          minesLeft < 10
+            ? "00" + minesLeft
+            : minesLeft < 100
+            ? "0" + minesLeft
+            : "" + minesLeft;
+        for (let i = 0; i < minesLeftCounter.length; i++) {
+          displayDigit(minesLeftCounter[i], minesLeftText[i], "descending");
+        }
+      }
       checkForWin();
     } else if (cell.classList.contains("flag")) {
       cell.classList.add("question");
       cell.classList.remove("flag");
       flags--;
+      if (cell.classList.contains("mine")) {
+        minesLeft = minesLeft + 1;
+        let minesLeftText =
+          minesLeft < 10
+            ? "00" + minesLeft
+            : minesLeft < 100
+            ? "0" + minesLeft
+            : "" + minesLeft;
+        for (let i = 0; i < minesLeftCounter.length; i++) {
+          displayDigit(minesLeftCounter[i], minesLeftText[i], "ascending");
+        }
+      }
     } else if (cell.classList.contains("question")) {
       cell.classList.remove("question");
     }
@@ -239,17 +241,10 @@ const checkCell = (cellId) => {
 };
 
 const checkForWin = () => {
-  let correctlyMarkedMines = 0;
-  for (let i = 0; i < cells.length; i++) {
-    if (cells[i].classList.contains("flag") && cells[i].classList.contains("mine")) {
-      correctlyMarkedMines++;
-    }
-    if (correctlyMarkedMines === mines) {
-      smile.classList.add("smile-win");
-      clearInterval(secondsTimer);
-      clearInterval(minutesTimer);
-      isGameOver = true;
-    }
+  if (minesLeft === 0) {
+    smile.classList.add("smile-win");
+    clearInterval(secondsTimer);
+    isGameOver = true;
   }
 };
 
@@ -338,10 +333,10 @@ const createMap = () => {
   }
 };
 
-export const startGame = (mapWidth, minesAmount, gameDuration) => {
-  duration = gameDuration;
+export const startGame = (mapWidth, minesAmount) => {
   width = mapWidth;
   mines = minesAmount;
+  minesLeft = minesAmount;
   createMap();
   smile.addEventListener("click", restartGame);
   smile.addEventListener("mousedown", () => smile.classList.add("smile-mousedown"));
